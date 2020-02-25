@@ -1,0 +1,10 @@
+﻿<div class="card">
+    <img src="@Value">
+</div>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+}

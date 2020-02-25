@@ -1,0 +1,45 @@
+﻿@page "/"
+<RadzenCard>
+    <RadzenLogin AllowResetPassword="false"
+                 Login="@((args) => Login(args, "Login with register"))"
+                 Register="@((args) => Register("Login with register"))" Style="margin-bottom: 20px;" />
+</RadzenCard>
+
+
+<RadzenTextBox Style="width:100%" @bind-Value="ImageURL"></RadzenTextBox>
+<br>
+<!-- <ImageComponent @bind-Value="@ImageURL"></ImageComponent>-->
+
+@for (int i = 0; i < 100; i++)
+{
+    <RadzenProgressBar @bind-Value="@value" Style="margin-bottom: 20px" />
+
+}
+@code {
+    string userName = "admin";
+    string password = "admin";
+    double value = 5;
+    string ImageURL = @"http://kaluga24.tv/wp-content/uploads/2020/02/a9f872b9b9e8e2d8d92f.jpg";
+    Dictionary<DateTime, string> events = new Dictionary<DateTime, string>();
+
+
+    void Login(LoginArgs args, string name)
+    {
+        events.Add(DateTime.Now, $"{name} -> Username: {args.Username} and password: {args.Password}");
+        ///  StateHasChanged();
+        if (value < 100)
+            value += 1;
+    }
+
+    void Register(string name)
+    {
+        events.Add(DateTime.Now, $"{name} -> Register");
+        //StateHasChanged();
+    }
+
+    void ResetPassword(string value, string name)
+    {
+        events.Add(DateTime.Now, $"{name} -> ResetPassword for user: {value}");
+        // StateHasChanged();
+    }
+}

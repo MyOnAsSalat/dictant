@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Demo1</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <style>
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 240px;
+            height: 240px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <app> 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-2">
+                    <div class="loader .center-block"></div>
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+        </div>        
+    </app>
+    
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>
