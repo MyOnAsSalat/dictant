@@ -1,0 +1,11 @@
+﻿@page "/task"
+@inject NotificationService notifyService
+<div class="row">
+    <div class="col-md-9">
+        Content Index
+        <Radzen.Blazor.RadzenButton Click="@(()=>notifyService.Notify(NotificationSeverity.Info,"Test","many",5000d))"></Radzen.Blazor.RadzenButton>
+    </div>
+    <div class="col-md-3">
+        Sidebar
+    </div>
+</div>

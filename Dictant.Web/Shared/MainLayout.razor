@@ -1,17 +1,13 @@
 ﻿@inherits LayoutComponentBase
-
-<div class="sidebar">
-    <NavMenu />
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-        <img src="/images/mark-github.svg" style="width:16px;" class="ml-md-auto mx-2"/>
-        <link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
-
+<link rel="stylesheet" href="_content/Radzen.Blazor/css/default.css">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <NavMenu></NavMenu>
+        </div>
     </div>
-
-    <div class="content px-4">
-        @Body
-    </div>
+    
+    @Body
 </div>
+<RadzenDialog></RadzenDialog>
+<RadzenNotification />

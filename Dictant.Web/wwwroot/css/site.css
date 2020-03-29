@@ -132,4 +132,14 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+    .content-scrollable {
+        overflow-y: scroll;
+        border-radius: 4px;
+    }
+    .content-body {
+        max-height: 900px;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }
