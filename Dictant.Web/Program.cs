@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
+
 namespace Dictant.Web
 {
   public class Program
@@ -11,6 +13,7 @@ namespace Dictant.Web
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.RootComponents.Add<App>("app");
+        builder.Services.AddLoadingBar();
         builder.Services.AddOptions();
         builder.Services.AddAuthorizationCore(options =>
         {
@@ -21,7 +24,7 @@ namespace Dictant.Web
         builder.Services.AddSingleton<NotificationService>();
         builder.Services.AddScoped<AuthenticationStateProvider,JWTAuthenticationProvider>(provider => provider.GetRequiredService<JWTAuthenticationProvider>());
         builder.Services.AddScoped<ILoginService,JWTAuthenticationProvider>(provider => provider.GetRequiredService<JWTAuthenticationProvider>());
-        await builder.Build().RunAsync();
+        await builder.Build().UseLoadingBar().RunAsync();
     }
   }
 }

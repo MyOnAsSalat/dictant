@@ -143,3 +143,16 @@ app {
         display: none;
     }
 }
+#loading-bar .bar {
+    transition: width 350ms linear, opacity 350ms;
+    background: #78cafc;
+    border-bottom-right-radius: 1px;
+    border-top-right-radius: 1px;
+    position: fixed;
+    z-index: 10002;
+    top: 0;
+    left: 0;
+    height: 6px !important;
+    opacity: 0;
+    width: 100%;
+}

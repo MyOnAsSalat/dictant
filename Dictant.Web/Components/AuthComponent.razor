@@ -10,7 +10,7 @@
 <RadzenTabs>
     <Tabs>
         <RadzenTabsItem Text="Login">
-            <RadzenLogin AllowResetPassword="true" ResetPassword="@(()=>ResetPassword())" AllowRegister="false"
+            <RadzenLogin AllowResetPassword="true" Visible="!isLoading" ResetPassword="@(()=>ResetPassword())" AllowRegister="false"
                          Login="args => LoginUser(args)"
                          Style="margin-bottom: 20px;"/>
         </RadzenTabsItem>
@@ -35,7 +35,7 @@
                 <div class="row" style="margin-bottom: 35px">
                     <div class="col-3"></div>
                     <div class="col-9">
-                        <RadzenButton Click="CreateUser" Style="display: block" Text="Register"/>
+                        <RadzenButton Disabled="isLoading" Click="CreateUser" Style="display: block" Text="Register"/>
                     </div>
                 </div>
 
@@ -49,6 +49,7 @@
 @code {
     readonly UserInfo userInfo = new UserInfo();
     EditContext RegisterContext;
+    bool isLoading = false;
 
     protected override Task OnInitializedAsync()
     {
@@ -57,6 +58,7 @@
     }
     async Task CreateUser()
     {
+        isLoading = true;
         if (!RegisterContext.Validate()) return;
         try
         {
@@ -74,12 +76,15 @@
                     notifyService.Notify(NotificationSeverity.Error, "Registration failed", "Account already exist", 10000);
                     break;
             }
+            Console.WriteLine("Exception in request, response:");
             Console.WriteLine(result);
         }
         catch (Exception e)
         {
             notifyService.Notify(NotificationSeverity.Error, "Account creation failed", "Please try again or contact administrator", 10000);
+            Console.WriteLine(e.Message);
         }
+        isLoading = false;
     }
 
     async Task ResetPassword()
@@ -88,6 +93,7 @@
     }
     async Task LoginUser(LoginArgs args)
     {
+        isLoading = true;
         try
         {
             userInfo.Email = args.Username;
@@ -99,8 +105,23 @@
         }
         catch (HttpRequestEnrichedException e)
         {
-            notifyService.Notify(NotificationSeverity.Error, "Authentication failed", "Please try again or contact administrator", 10000);
+            var result = await e.Response.Content.ReadAsStringAsync();
+            if (result.Contains("Invalid login attempt."))
+            {
+                notifyService.Notify(NotificationSeverity.Error, "Failed to log in", "Please make sure that you have entered your login and password correctly", 10000);
+            }
+            else
+            {
+                notifyService.Notify(NotificationSeverity.Error, "Authentication failed", "Please make sure that you have entered your login and password correctly or contact administrator", 10000);
+            }
+            Console.WriteLine(result);
         }
+        catch (Exception e)
+        {
+            notifyService.Notify(NotificationSeverity.Error, "Authentication in failed", "Please try again or contact administrator", 10000);
+            Console.WriteLine(e.Message);
+        }
+        isLoading = false;
     }
 
     async Task LogoutUser()

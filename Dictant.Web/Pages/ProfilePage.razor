@@ -1,9 +1,7 @@
 ﻿@page "/profile"
 
 @inject NavigationManager navigationManager
-<Radzen.Blazor.RadzenButton @onclick="(args => navigationManager.NavigateTo(path))" Text="Open helper" />
-<RadzenNumeric TValue="int" Style="margin-bottom: 20px" Change="@(args => count = args)" />
+Profile page
 @code {
-    string path => "/helper/?countParam=" + count;
-    int count;
+
 }

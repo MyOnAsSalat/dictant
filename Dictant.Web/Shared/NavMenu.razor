@@ -19,6 +19,7 @@
                     </a>
                 </NotAuthorized>
                 <Authorized>
+                    <RadzenMenuItem Text="Profile" Icon="account_circle" Path="/profile" Style="flex: 0 0 auto; margin-right: 0px" Match="@NavLinkMatch.All"></RadzenMenuItem>
                     <a @onclick="@(() => LogoutUser())">
                         <RadzenMenuItem Text="Logout" Icon="exit_to_app" Style="flex: 0 0 auto; margin-right: 60px" Match="@NavLinkMatch.All"></RadzenMenuItem>
                     </a>
