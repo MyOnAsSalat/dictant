@@ -7,6 +7,10 @@ namespace Dictant.Web.Pages
 {
     public partial class Index
     {
-        
+        public  async Task Test()
+        {
+          var user = (await authStateProvider.GetAuthenticationStateAsync()).User;
+          
+        }
     }
 }

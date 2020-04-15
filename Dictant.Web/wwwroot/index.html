@@ -8,6 +8,8 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js?render=6Lfk9ucUAAAAAD2RXe_7XBxLtV4oJ2lj09SVg1yr'></script>
+    <script src="../js/site-interop.js"></script>
     <style>
         .loader {
             border: 16px solid #f3f3f3; /* Light grey */
@@ -30,18 +32,19 @@
     </style>
 </head>
 <body>
-    <app> 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-5"></div>
-                <div class="col-md-2">
-                    <div class="loader .center-block"></div>
-                </div>
-                <div class="col-md-5"></div>
+
+<app>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <div class="loader .center-block"></div>
             </div>
-        </div>        
-    </app>
-    
-    <script src="_framework/blazor.webassembly.js"></script>
+            <div class="col-md-5"></div>
+        </div>
+    </div>
+</app>
+
+<script src="_framework/blazor.webassembly.js"></script>
 </body>
 </html>

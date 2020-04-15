@@ -1,7 +1,14 @@
-﻿@inject NotificationService notifyService;
-<RadzenPanel Style="border-radius: 4px; box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8; height: 300px; margin-bottom: 20px; margin-top: 20px;">
+﻿@using System.Security.Claims
+@inject NotificationService notifyService;
+@inject AuthenticationStateProvider authStateProvider
+<RadzenPanel AllowCollapse="true" Style="border-radius: 4px; box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8; margin-bottom: 20px; margin-top: 20px;">
     <ChildContent>
         <h3>Notification </h3>
         <Radzen.Blazor.RadzenButton Click="@(()=>notifyService.Notify(NotificationSeverity.Info,"Test","many",5000d))"></Radzen.Blazor.RadzenButton>
+        @Claims.FirstOrDefault(claim=>claim.Type == "University")?.Value
+        @if (test)
+        {
+            <a >moderator</a>
+        }
     </ChildContent>
 </RadzenPanel>

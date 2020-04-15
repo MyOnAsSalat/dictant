@@ -1,10 +1,19 @@
 ﻿@page "/"
 @inject NotificationService notifyService
+@inject AuthenticationStateProvider authStateProvider
 <div class="row">
     <div class="col-md-9">
         <BlogComponent></BlogComponent>
     </div>
     <div class="col-md-3">
+        <AuthorizeView Roles="moderator">
+            <NotificationComponent></NotificationComponent>
+            <a>moderator</a>
+        </AuthorizeView>
+        <AuthorizeView Roles="admin">
+            <NotificationComponent></NotificationComponent>
+            <a>admin</a>
+        </AuthorizeView>
         <NotificationComponent></NotificationComponent>
     </div>
 </div>

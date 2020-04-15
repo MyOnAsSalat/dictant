@@ -1,0 +1,112 @@
+﻿@using Dictant.Shared.Models
+@using Dictant.Web.Auth
+@using Dictant.Web.Extensions
+@using Dictant.Web.Helpers
+@inject HttpClient http
+@inject ILoginService loginService
+@inject NavigationManager navigationManager
+@inject NotificationService notifyService
+@inject IJSRuntime js;
+<RadzenTabs>
+    <Tabs>
+        <RadzenTabsItem Text="Login">
+            <RadzenLogin AllowResetPassword="true" ResetPassword="@(()=>ResetPassword())" AllowRegister="false"
+                         Login="args => LoginUser(args)"
+                         Style="margin-bottom: 20px;"/>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Register">
+            <EditForm EditContext="RegisterContext">
+                <DataAnnotationsValidator />
+                <div class="row form-group">
+                    <label class="col-sm-3 col-form-label" for="Email">Email</label>
+                    <div class="col">
+                        <RadzenTextBox style="display: block; width: 100%" Name="Email" @bind-Value="userInfo.Email" />
+                        <ValidationMessage For="@(() => userInfo.Email)" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 col-form-label" for="password">Password</label>
+                    <div class="col">
+                        <RadzenPassword style="display: block; width: 100%" Name="Password" @bind-Value="userInfo.Password"/>
+                        <ValidationMessage For="@(() => userInfo.Password)"/>
+
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 35px">
+                    <div class="col-3"></div>
+                    <div class="col-9">
+                        <RadzenButton Click="CreateUser" Style="display: block" Text="Register"/>
+                    </div>
+                </div>
+
+            </EditForm>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+
+<div class="g-recaptcha" data-sitekey="6LdP6ecUAAAAAGSkpl_Nw1Y9J9hys_Ipa7JzUoyL"></div>
+
+@code {
+    readonly UserInfo userInfo = new UserInfo();
+    EditContext RegisterContext;
+
+    protected override Task OnInitializedAsync()
+    {
+        RegisterContext = new EditContext(userInfo);
+        return base.OnInitializedAsync();
+    }
+    async Task CreateUser()
+    {
+        if (!RegisterContext.Validate()) return;
+        try
+        {
+            var token = await js.RunReCaptcha("register");
+            var result = await http.Extend().PostJsonAsync<UserToken>("https://localhost:5001/api/accounts/create?CaptchaToken=" + token, userInfo);
+            await loginService.Login(result.Token);
+            navigationManager.NavigateTo("");
+        }
+        catch (HttpRequestEnrichedException e)
+        {
+            var result = await e.Response.Content.ReadAsStringAsync();
+            switch (result)
+            {
+                case "Failed : DuplicateUserName":
+                    notifyService.Notify(NotificationSeverity.Error, "Registration failed", "Account already exist", 10000);
+                    break;
+            }
+            Console.WriteLine(result);
+        }
+        catch (Exception e)
+        {
+            notifyService.Notify(NotificationSeverity.Error, "Account creation failed", "Please try again or contact administrator", 10000);
+        }
+    }
+
+    async Task ResetPassword()
+    {
+
+    }
+    async Task LoginUser(LoginArgs args)
+    {
+        try
+        {
+            userInfo.Email = args.Username;
+            userInfo.Password = args.Password;
+            var token = await js.RunReCaptcha("login");
+            var result = await http.Extend().PostJsonAsync<UserToken>("https://localhost:5001/api/accounts/login?CaptchaToken=" + token, userInfo);
+            await loginService.Login(result.Token);
+            navigationManager.NavigateTo("");
+        }
+        catch (HttpRequestEnrichedException e)
+        {
+            notifyService.Notify(NotificationSeverity.Error, "Authentication failed", "Please try again or contact administrator", 10000);
+        }
+    }
+
+    async Task LogoutUser()
+    {
+        await loginService.Logout();
+        navigationManager.NavigateTo("");
+    }
+
+}

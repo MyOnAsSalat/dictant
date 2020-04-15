@@ -1,14 +1,37 @@
-﻿<div class="row">
+﻿@using Dictant.Web.Auth
+@inject DialogService dialogService
+@inject ILoginService loginService
+@inject NavigationManager navigationManager
+<div class="row">
     <div class="col-12">
-        <RadzenMenu Style="border-radius:0.75rem">
-            <RadzenMenuItem Text="Feed" Icon="home" Path="/" Match="@NavLinkMatch.All">
-            </RadzenMenuItem>
-            <RadzenMenuItem Text="Problemset" Icon="assignment_turned_in" Path="/problemset" Match="@NavLinkMatch.All" >
-            </RadzenMenuItem>
-            <RadzenMenuItem Text="Moderation" Icon="assignment_turned_in" Path="/moderation" Match="@NavLinkMatch.All" >
-            </RadzenMenuItem>
+        <RadzenMenu Style="border-radius: 0.75rem; display: flex; justify-content: space-between">
+            <div style="display: flex; flex: 1 1 auto;">
+                <RadzenMenuItem Text="Feed" Icon="home" Path="/" Match="@NavLinkMatch.All"/>
+                <RadzenMenuItem Text="Problemset" Icon="assignment_turned_in" Path="/problemset" Match="@NavLinkMatch.All"/>
+                <AuthorizeView Roles="moderator">
+                    <RadzenMenuItem Text="Moderation" Icon="assignment_turned_in" Path="/moderation" Match="@NavLinkMatch.All"/>
+                </AuthorizeView>
+            </div>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <a @onclick="@(() => OnAuthClick())">
+                        <RadzenMenuItem Text="Login/Register" Icon="account_box" Style="flex: 0 0 auto; margin-right: 60px" Match="@NavLinkMatch.All"></RadzenMenuItem>
+                    </a>
+                </NotAuthorized>
+                <Authorized>
+                    <a @onclick="@(() => LogoutUser())">
+                        <RadzenMenuItem Text="Logout" Icon="exit_to_app" Style="flex: 0 0 auto; margin-right: 60px" Match="@NavLinkMatch.All"></RadzenMenuItem>
+                    </a>
+                </Authorized>
+            </AuthorizeView>
         </RadzenMenu>
     </div>
 </div>
 
-
+@code
+{
+    async void OnAuthClick()
+    {
+        await dialogService.OpenAsync("Login/Register", ds => @<AuthComponent/>);
+    }
+}
