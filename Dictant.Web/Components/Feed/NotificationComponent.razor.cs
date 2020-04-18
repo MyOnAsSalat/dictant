@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Dictant.Web.Components
+namespace Dictant.Web.Components.Feed
 {
     public partial class NotificationComponent
     {

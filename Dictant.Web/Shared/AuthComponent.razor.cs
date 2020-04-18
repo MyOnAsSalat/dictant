@@ -6,7 +6,7 @@ using Dictant.Web.Helpers;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
 
-namespace Dictant.Web.Components
+namespace Dictant.Web.Shared
 {
     public partial class AuthComponent
     {
