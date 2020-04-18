@@ -10,7 +10,6 @@ namespace Dictant.Web.Pages
         public  async Task Test()
         {
           var user = (await authStateProvider.GetAuthenticationStateAsync()).User;
-          
         }
     }
 }
