@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dictant.Server.Data;
 using Dictant.Server.Middleware;
-using Dictant.Shared.Models;
+using Dictant.Shared.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

@@ -32,7 +32,7 @@ namespace Dictant.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddDbContext<TasksDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;

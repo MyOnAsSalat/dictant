@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Dictant.Shared.Models;
+using Dictant.Shared.Models.Auth;
 using Dictant.Web.Extensions;
 using Dictant.Web.Helpers;
 using Microsoft.AspNetCore.Components.Forms;

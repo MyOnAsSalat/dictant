@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dictant.Shared.Models
+namespace Dictant.Shared.Models.Tasks
 {
-    public class UserToken
+    //DTO
+    public class AttemptResult
     {
         public string Token { get; set; }
-        public DateTime Expiration { get; set; }
+        public string Result { get; set; }
     }
 }

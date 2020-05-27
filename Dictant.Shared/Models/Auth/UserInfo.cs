@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Dictant.Shared.Models
+namespace Dictant.Shared.Models.Auth
 {
     public class UserInfo
     {
