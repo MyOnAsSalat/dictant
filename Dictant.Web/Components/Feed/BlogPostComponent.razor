@@ -1,5 +1,10 @@
 ﻿<RadzenPanel Style="border-radius: 4px; box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8; height: 500px; margin-bottom: 20px; margin-top: 20px;">
     <ChildContent>
-        <h3>Post content</h3>
+        <h3>@Source.Title</h3>
+        @Source.Content
+        @if (Source.Picture != null)
+        {
+            <RadzenImage Path="@(Source.Picture)" Style="width:600px" />
+        }
     </ChildContent>
 </RadzenPanel>

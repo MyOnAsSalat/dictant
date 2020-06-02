@@ -1,7 +1,7 @@
 ﻿namespace Dictant.Shared.Models.Tasks
 {
     //
-    public class Dictant
+    public class DictantSource
     {
         public int Id { get; set; }
         public string Title { get; set; }

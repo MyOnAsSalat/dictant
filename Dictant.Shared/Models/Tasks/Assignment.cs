@@ -9,6 +9,7 @@ namespace Dictant.Shared.Models.Tasks
     {
         //Определяет тип задания (форму проведения)
         public string Type { get;set;}
-        public Dictant Dictant {get;set; }
+        public string Token { get; set; }
+        public DictantSource DictantSource {get;set; }
     }
 }
