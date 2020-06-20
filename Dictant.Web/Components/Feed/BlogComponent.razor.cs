@@ -13,7 +13,6 @@ namespace Dictant.Web.Components.Feed
     {
         private EditContext NewPostContext;
         private readonly BlogPost NewPost = new BlogPost();
-        public BlogPost SourceExample = new BlogPost {Id = 0,Title="Title of post",Content="Text of post", Picture="https://avatars.mds.yandex.net/get-zen_doc/35845/pub_5a9bdeb5dcaf8e72a316cc59_5a9d008f79885e0afce66290/scale_1200"};
         private IEnumerable<BlogPost> Posts;
         protected override async Task OnInitializedAsync()
         {
