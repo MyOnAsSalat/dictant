@@ -2,9 +2,21 @@
 @inject NotificationService notifyService
 <div class="row">
     <div class="col-md-9">
-        Content Index
-        <Radzen.Blazor.RadzenButton Click="@(()=>notifyService.Notify(NotificationSeverity.Info,"Test","many",5000d))"></Radzen.Blazor.RadzenButton>
-    </div>
+        @if (Source != null)
+        {
+            <div class="row">
+                <h2>@Source.Title</h2>
+            </div>
+            <div class="row">
+                <RadzenCard Style="">
+                    @foreach (var word in GetUniqueWords())
+                    {
+                        @(word+" ")
+                    }
+                </RadzenCard>
+            </div>
+            }
+        </div>
     <div class="col-md-3">
         Sidebar
     </div>

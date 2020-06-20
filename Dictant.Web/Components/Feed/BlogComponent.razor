@@ -1,6 +1,37 @@
-﻿<div class="content-body content-scrollable">
-    @for (int i = 0; i < 10; i++)
+﻿@inject HttpClient http
+@inject NavigationManager navigationManager
+<EditForm EditContext="NewPostContext">
+    <div class="row form-group">
+        <div class="col">
+            <RadzenTextBox style="display: block; width: 100%" Name="Title" @bind-Value="NewPost.Title" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col">
+            <RadzenTextArea Rows="10" style="display: block; width: 100%" Name="Text" @bind-Value="NewPost.Content" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 col-form-label" for="Image">Image URL</label>
+        <div class="col">
+            <RadzenTextBox style="display: block; width: 100%" Name="Image" @bind-Value="NewPost.Picture" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 35px">
+        <div class="col-3"></div>
+        <div class="col-9">
+            <RadzenButton Click="CreatePost" Style="display: block" Text="Create Post" />
+        </div>
+    </div>
+
+</EditForm>
+<div class="content-body content-scrollable">
+    @if (Posts != null)
     {
-        <BlogPostComponent Source="@SourceExample"></BlogPostComponent>
+        @foreach (var post in Posts)
+        {
+            <BlogPostComponent Source="@post"></BlogPostComponent>
+        }
     }
+
 </div>
