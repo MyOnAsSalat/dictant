@@ -1,7 +1,31 @@
 ﻿@page "/profile"
 
 @inject NavigationManager navigationManager
-Profile page
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenTabs Style="margin-top:20px;">
+                <Tabs>
+                    <RadzenTabsItem Text="Profile">
+                        <RadzenCard>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b style="margin-top:20px">Email:</b>
+                                    qwerty123@mail.ru
+                                    <b>Password:</b>
+                                    ***
+                                </div>
+                            </div>
+                        </RadzenCard>
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Tasks">
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Exams">
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+        </div>
+    </div>    
+
 @code {
 
 }
