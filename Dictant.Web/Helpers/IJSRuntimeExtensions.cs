@@ -39,5 +39,6 @@ namespace Dictant.Web.Helpers
         {
            return await js.InvokeAsync<string>("runCaptcha",action);
         }
+
     }
 }

@@ -10,13 +10,13 @@ namespace Dictant.Shared.Models.Tasks
         public static DictantSource GetMock()
         {
             var source = new DictantSource();
-            source.Title = "Название диктанта";
+            source.Title = "Diggy diggy hole";
             source.Description = "Описание диктанта";
             source.Approved = true;
             source.ApproverId = "Approver";
             source.OwnerId = "Creator";
             source.Text = GetWords();
-
+            source.Timings = GetTimings();
             return source;
         }
         //","
@@ -37,8 +37,17 @@ namespace Dictant.Shared.Models.Tasks
             source.Words.Add(
                 new List<string>()
                 {
-                    "down","and","down","into","the","deep","who","knows","what","we’ll","find","beneath"
+                    "down","and","down","into","the","deep","who","knows","what","we","will","find","beneath"
                 });
+            return JsonConvert.SerializeObject(source);
+        }
+        public static string GetTimings()
+        {
+            var source = new Timings();
+            source.Segments = new List<double[]>();
+            source.Segments.Add(new []{32d,4.8d});
+            source.Segments.Add(new []{36.5d,4d});
+            source.Segments.Add(new []{40.5d,4.1d});
             return JsonConvert.SerializeObject(source);
         }
     }

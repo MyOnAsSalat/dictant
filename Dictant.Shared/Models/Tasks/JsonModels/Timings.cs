@@ -6,6 +6,6 @@ namespace Dictant.Shared.Models.Tasks.JsonModels
 {
     public class Timings
     {
-        public List<TimeSpan> Spans { get; set; }
+        public List<double[]> Segments { get; set; }
     }
 }

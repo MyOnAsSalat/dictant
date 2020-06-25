@@ -1,23 +1,50 @@
 ﻿@page "/task"
 @inject NotificationService notifyService
-<div class="row">
-    <div class="col-md-9">
-        @if (Source != null)
-        {
+@inject IJSRuntime js;
+    <div class="row">
+        <div class="col-md-9">
             <div class="row">
-                <h2>@Source.Title</h2>
+                <audio id="zvuk" preload="none" src="https://zaycev.net/musicset/dl/083cbb792c8b9ad91a78e27c3b14601f/3080181.json?spa=false"></audio>
             </div>
-            <div class="row">
-                <RadzenCard Style="">
-                    @foreach (var word in GetUniqueWords())
+            @if (Source != null)
+            {
+                <div class="row">
+                    <h2>@Source.Title</h2>
+                </div>
+                <div class="row">
+                    <RadzenCard Style="">
+                        @foreach (var word in GetUniqueWords())
+                        {
+                            @(word + " ")
+                        }
+                    </RadzenCard>
+                </div>
+                @foreach (var val in Line)
+                {
+                    <div class="row">
+                        <h3><strong>@val</strong></h3> 
+                    </div>
+                }
+                if (!IsFinished)
+                {
+                    if (IsStarted)
                     {
-                        @(word+" ")
+                        <div class="row">
+                            <RadzenTextBox Style="width: 1000px;" @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDown"></RadzenTextBox>
+                        </div>
                     }
-                </RadzenCard>
-            </div>
+                    <div class="row">
+                        <Radzen.Blazor.RadzenButton Style="width: 1000px;" Text="@interactButtonText" Click="@Start" />
+                    </div>
+                }
             }
         </div>
-    <div class="col-md-3">
-        Sidebar
+        <div class="col-md-3">
+            <div class="row">
+                 Mistakes: <strong>@MistakesCount</strong>
+            </div>
+            <div class="row">
+               Repeats: <strong>@Repeats</strong>
+            </div>
+        </div>
     </div>
-</div>
