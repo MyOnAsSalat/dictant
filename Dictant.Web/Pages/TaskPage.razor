@@ -1,50 +1,63 @@
 ﻿@page "/task"
 @inject NotificationService notifyService
 @inject IJSRuntime js;
-    <div class="row">
-        <div class="col-md-9">
+<div class="row">
+    <div class="col-md-9">
+        <div class="row">
+            <audio id="zvuk" preload="none" src="https://zaycev.net/musicset/dl/083cbb792c8b9ad91a78e27c3b14601f/3080181.json?spa=false"></audio>
+        </div>
+        @if (Source != null)
+        {
             <div class="row">
-                <audio id="zvuk" preload="none" src="https://zaycev.net/musicset/dl/083cbb792c8b9ad91a78e27c3b14601f/3080181.json?spa=false"></audio>
+                <h2>@Source.Title</h2>
             </div>
-            @if (Source != null)
+            <div class="row">
+                <RadzenCard Style="">
+                    <h3>Unique words:</h3>
+                    @foreach (var word in GetUniqueWords())
+                    {
+                        @(word + " ")
+                    }
+                </RadzenCard>
+            </div>
+            @foreach (var val in Line)
             {
                 <div class="row">
-                    <h2>@Source.Title</h2>
+                    <h3>
+                        <strong>@val</strong>
+                    </h3>
                 </div>
-                <div class="row">
-                    <RadzenCard Style="">
-                        @foreach (var word in GetUniqueWords())
-                        {
-                            @(word + " ")
-                        }
-                    </RadzenCard>
-                </div>
-                @foreach (var val in Line)
-                {
-                    <div class="row">
-                        <h3><strong>@val</strong></h3> 
-                    </div>
-                }
-                if (!IsFinished)
-                {
-                    if (IsStarted)
-                    {
-                        <div class="row">
-                            <RadzenTextBox Style="width: 1000px;" @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDown"></RadzenTextBox>
-                        </div>
-                    }
-                    <div class="row">
-                        <Radzen.Blazor.RadzenButton Style="width: 1000px;" Text="@interactButtonText" Click="@Start" />
-                    </div>
-                }
             }
-        </div>
-        <div class="col-md-3">
-            <div class="row">
-                 Mistakes: <strong>@MistakesCount</strong>
+            if (!IsFinished)
+            {
+                if (IsStarted)
+                {
+                    <div class="row">
+                        <RadzenTextBox Style="width: 1000px;" @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDown"></RadzenTextBox>
+                    </div>
+                }
+                <div class="row">
+                    <Radzen.Blazor.RadzenButton Style="width: 1000px;" Text="@interactButtonText" Click="@Start"/>
+                </div>
+            }
+            else
+            {
+                <RadzenCard  Style="">
+                    <div class="row">
+                        <h1 class="text-center">  Mistakes: <strong>@MistakesCount</strong></h1>
+                    </div>
+                    <div class="row">
+                        <h1 class="text-center">  Repeats: <strong class="text-center">@Repeats</strong></h1>
+                    </div>
+                    <div class="row">
+                        <h1 class="text-center">  Time elapsed: <strong>@(string.Format("{0}:{1}", (int)elapsedTime.TotalMinutes, elapsedTime.Seconds))</strong></h1>
+                    </div>
+                </RadzenCard>
+            }
+        }
             </div>
-            <div class="row">
-               Repeats: <strong>@Repeats</strong>
-            </div>
-        </div>
+    <div class="col-md-3">
+
+        
     </div>
+</div>

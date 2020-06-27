@@ -18,10 +18,18 @@ namespace Dictant.Web.Pages
     {
         public double CurrentPosition; 
         public DictantSource Source;
+        private List<string> _uniqueWords;
+        private DateTime startTime;
+        private TimeSpan elapsedTime;
         public List<string> GetUniqueWords()
         {
             if(Text == null) return new List<string>(){ "null"};
-            return Text.Words.SelectMany(x=>x).Distinct().ToList();
+            if (_uniqueWords == null)
+            {
+                Random rnd = new Random();
+                _uniqueWords = Text.Words.SelectMany(x => x).Distinct().OrderBy(x => rnd.Next()).ToList();
+            }
+            return _uniqueWords;
         }
         TextSource _text;
 
@@ -48,25 +56,18 @@ namespace Dictant.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             Source = DictantMock.GetMock();
-            //await Task.Run(async () =>
-            //{
-            //    while (true)
-            //    {
-            //        await Task.Delay(300);
-
-            //    }
-            //});
         }
 
         
-        private async void Start()
+        private void Start()
         {
             var segments = GetTimings();
             if (!IsStarted)
             {
+                startTime = DateTime.Now;
                 IsStarted = true;
                 interactButtonText = "Repeat";
-                await js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1]);
+                 js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1]+1);
             }
             else
             {
@@ -103,6 +104,7 @@ namespace Dictant.Web.Pages
                 {
                     if (LineIndex == Text.Words.Count - 1)
                     {
+                        elapsedTime = DateTime.Now - startTime;
                         IsFinished = true;
                         //Finish
                         return;
