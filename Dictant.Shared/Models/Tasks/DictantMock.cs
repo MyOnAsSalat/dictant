@@ -10,7 +10,7 @@ namespace Dictant.Shared.Models.Tasks
         public static DictantSource GetMock()
         {
             var source = new DictantSource();
-            source.Title = "Diggy diggy hole";
+            source.Title = "Veteran monologue";
             source.Description = "Описание диктанта";
             source.Approved = true;
             source.ApproverId = "Approver";

@@ -8,14 +8,17 @@
         <BlogComponent></BlogComponent>
     </div>
     <div class="col-md-3">
-        <AuthorizeView Roles="moderator">
+        @if (false)
+        {
+            <AuthorizeView Roles="moderator">
+                <NotificationComponent></NotificationComponent>
+                <a>moderator</a>
+            </AuthorizeView>
+            <AuthorizeView Roles="admin">
+                <NotificationComponent></NotificationComponent>
+                <a>admin</a>
+            </AuthorizeView>
             <NotificationComponent></NotificationComponent>
-            <a>moderator</a>
-        </AuthorizeView>
-        <AuthorizeView Roles="admin">
-            <NotificationComponent></NotificationComponent>
-            <a>admin</a>
-        </AuthorizeView>
-        <NotificationComponent></NotificationComponent>
+        }
     </div>
 </div>

@@ -23,19 +23,19 @@ namespace Dictant.Server.Controllers
             this.db = db;
         }
         
-        [HttpGet]
+        [HttpGet("Get")]
         public IEnumerable<DictantSource> Get()
         {
             return db.Dictants;
         }
 
         
-        [HttpGet("{id}")]
-        public int GetCount(int id)
+        [HttpGet("GetCount")]
+        public int GetCount()
         {
             return db.Dictants.Count();
         }
-
+        [HttpGet("Approve/{id}")]
         public void Approve(int id)
         {
             var model =  db.Dictants.FirstOrDefault(x => x.Id==id);
@@ -44,7 +44,7 @@ namespace Dictant.Server.Controllers
             db.SaveChanges();
         }
 
-        [HttpPost("{id}")]
+        [HttpGet("Reject/{id}")]
         public void Reject(int id)
         {
             if (HttpContext.User.Claims.All(x => x.Type != "moderator")) return;
@@ -53,14 +53,14 @@ namespace Dictant.Server.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("Get/{id}")]
         public async Task<DictantSource> Get(int id)
         {
             return await db.Dictants.FindAsync(id);
         }
 
         
-        [HttpPost][Authorize]
+        [HttpPost("Post")]
         public void Post([FromBody] DictantSource dto)
         {
             var model = db.Dictants.FirstOrDefault(x => x.Id == dto.Id);
@@ -74,7 +74,7 @@ namespace Dictant.Server.Controllers
                 model.Description = dto.Description;
                 model.Public = dto.Public;
                 //Временно
-                model.Approved = true;
+                model.Approved = false;
                 //
                 db.Dictants.Update(model);
                 db.SaveChanges();
@@ -85,6 +85,7 @@ namespace Dictant.Server.Controllers
                 //Временно
                 dto.Approved = true;
                 db.Dictants.Add(dto);
+                db.SaveChanges();
             }
             
         }

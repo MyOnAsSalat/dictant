@@ -1,6 +1,8 @@
 ﻿@page "/task"
 @inject NotificationService notifyService
+@inject NavigationManager navigationManager
 @inject IJSRuntime js;
+@inject HttpClient http
 <div class="row">
     <div class="col-md-9">
         <div class="row">
@@ -37,12 +39,12 @@
                     </div>
                 }
                 <div class="row">
-                    <Radzen.Blazor.RadzenButton Style="width: 1000px;" Text="@interactButtonText" Click="@Start"/>
+                    <Radzen.Blazor.RadzenButton Style="width: 1000px;" Text="@interactButtonText" Click="@Start" />
                 </div>
             }
             else
             {
-                <RadzenCard  Style="">
+                <RadzenCard Style="">
                     <div class="row">
                         <h1 class="text-center">  Mistakes: <strong>@MistakesCount</strong></h1>
                     </div>
@@ -55,9 +57,9 @@
                 </RadzenCard>
             }
         }
-            </div>
+    </div>
     <div class="col-md-3">
 
-        
+
     </div>
 </div>

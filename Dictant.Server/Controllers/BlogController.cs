@@ -8,7 +8,6 @@ using Dictant.Shared.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Dictant.Server.Controllers
 {
@@ -21,21 +20,18 @@ namespace Dictant.Server.Controllers
         {
             this.db = db;
         }
-        // GET: api/<BlogController>
         [HttpGet("Get")][HttpGet]
         public IEnumerable<BlogPost> Get()
         {
             return db.BlogPosts;
         }
 
-        // GET api/<BlogController>/5
         [HttpGet("{id}")]
         public BlogPost Get(int id)
         {
             return db.BlogPosts.FirstOrDefault(x=>x.Id == id);
         }
 
-        // POST api/<BlogController>
         [HttpPost("Post")]
         public void Post([FromBody] BlogPost value)
         {
@@ -43,7 +39,6 @@ namespace Dictant.Server.Controllers
             db.SaveChanges();
         }
 
-        // DELETE api/<BlogController>/5
         [HttpDelete("{id}")]
         public async void Delete(int id)
         {

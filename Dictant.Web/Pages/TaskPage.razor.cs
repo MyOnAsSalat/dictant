@@ -11,12 +11,12 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components;
 using Dictant.Web.Helpers;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Dictant.Web.Pages
 {
     public partial class TaskPage
     {
-        public double CurrentPosition; 
         public DictantSource Source;
         private List<string> _uniqueWords;
         private DateTime startTime;
@@ -55,12 +55,17 @@ namespace Dictant.Web.Pages
         }
         protected override async Task OnInitializedAsync()
         {
-            Source = DictantMock.GetMock();
+            //Source = DictantMock.GetMock();
+            if (QueryHelpers.ParseQuery(navigationManager.ToAbsoluteUri(navigationManager.Uri).Query).TryGetValue("id", out var id))
+            {
+                Source = await http.GetJsonAsync<DictantSource>("https://localhost:5001/api/Dictant/get/" + id);
+            }
         }
 
         
         private void Start()
         {
+            //http.PostJsonAsync("https://localhost:5001/api/Dictant/Post", Source);
             var segments = GetTimings();
             if (!IsStarted)
             {
@@ -75,10 +80,7 @@ namespace Dictant.Web.Pages
                  Repeats++;
             }
         }
-        private async void Resume()
-        {
-          CurrentPosition = (await js.AudioGetCurrentTime("zvuk")-10d)*100d/(30d);
-        }
+
 
         private List<string> Line = new List<string>();
         private string wordbox = "";

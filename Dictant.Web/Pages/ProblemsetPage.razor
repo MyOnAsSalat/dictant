@@ -1,11 +1,18 @@
 ﻿@page "/problemset"
+@inject HttpClient http
 @inject NavigationManager navigationManager
 
-    <div class="row">
-        <div class="col-md-9">
-            <ProblemComponent></ProblemComponent>
-        </div>
-        <div class="col-md-3">
-            <SearchComponent></SearchComponent>
-        </div>
+<div class="row">
+    <div class="col-md-9">
+        @if(Dictants != null)
+        { 
+        @foreach (var model in Dictants)
+        {
+            <Dictant.Web.Components.Problemset.ProblemItemComponent Source="@model"/>
+        }
+        }
     </div>
+    <div class="col-md-3">
+        <SearchComponent></SearchComponent>
+    </div>
+</div>

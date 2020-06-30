@@ -1,0 +1,7 @@
+﻿@inject HttpClient http
+@inject NavigationManager navigationManager
+<Radzen.Blazor.RadzenPanel>
+    <h2>@Source.Id  @Source.OwnerId  <a href="https://localhost:7001/task?id=@Source.Id">@Source.Title</a></h2>
+    <Radzen.Blazor.RadzenButton Text="Approve" Click="@(() => { http.GetAsync("https://localhost:5001/api/Dictant/Approve/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Success" />
+    <Radzen.Blazor.RadzenButton Text="Reject" Click="@(() => {http.GetAsync("https://localhost:5001/api/Dictant/Reject/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Danger" />
+</Radzen.Blazor.RadzenPanel>
