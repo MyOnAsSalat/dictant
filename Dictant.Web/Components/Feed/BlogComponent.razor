@@ -1,13 +1,15 @@
 ﻿@inject HttpClient http
 @inject NavigationManager navigationManager
-    <AuthorizeView Context="authcontext">
-        <EditForm EditContext="NewPostContext">
+    <AuthorizeView Roles="moderator" Context="authcontext">
+        <EditForm Style="margin-top: 20px" EditContext="NewPostContext">
             <div class="row form-group">
+                <label class="col-sm-3 col-form-label" for="Title">Title</label>
                 <div class="col">
                     <RadzenTextBox style="display: block; width: 100%" Name="Title" @bind-Value="NewPost.Title" />
                 </div>
             </div>
             <div class="row form-group">
+                <label class="col-sm-3 col-form-label" for="Text">Content</label>
                 <div class="col">
                     <RadzenTextArea Rows="10" style="display: block; width: 100%" Name="Text" @bind-Value="NewPost.Content" />
                 </div>
@@ -19,8 +21,7 @@
                 </div>
             </div>
             <div class="row" style="margin-bottom: 35px">
-                <div class="col-3"></div>
-                <div class="col-9">
+                <div class="col-12">
                     <RadzenButton Click="CreatePost" Style="display: block" Text="Create Post" />
                 </div>
             </div>

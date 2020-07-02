@@ -47,7 +47,7 @@ namespace Dictant.Server.Controllers
         [HttpGet("Reject/{id}")]
         public void Reject(int id)
         {
-            if (HttpContext.User.Claims.All(x => x.Type != "moderator")) return;
+            //if (HttpContext.User.Claims.All(x => x.Type != "moderator")) return;
             db.Dictants.Remove(db.Dictants.FirstOrDefault(x => x.Id==id));
             db.SaveChanges();
         }
