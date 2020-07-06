@@ -23,7 +23,7 @@ AudioPlaySegment = function (id,start,duration) {
     audio.currentTime = start;
     audio.play();
     var timeoutId = setTimeout(function(){audio.pause()}, duration*1000);
-    AudioTimeouts[id] =timeoutId;
+    AudioTimeouts[id] = timeoutId;
 }
 AudioGetDuration = function (id) {
     var audio = document.getElementById(id);
