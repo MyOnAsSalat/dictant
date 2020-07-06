@@ -1,5 +1,18 @@
-﻿<h3>Component</h3>
+﻿@inject HttpClient http
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTextBox Placeholder="Search..." Change="@(args => ChangeAsync(args, property))" Style="margin-bottom: 20px" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenRadioButtonList @bind-Value="property" TValue="int">
+            <Items>
+                <RadzenRadioButtonListItem Text="Title" Value="1" />
+                <RadzenRadioButtonListItem Text="Description" Value="2" />
+            </Items>
+        </RadzenRadioButtonList>
+    </div>
+</div>
 
-@code {
 
-}

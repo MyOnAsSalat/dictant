@@ -1,36 +1,56 @@
-﻿@page "/profile"
-
+﻿@using Dictant.Shared.Models.Tasks;
+@using Dictant.Web.Components.Editor;  
+@page "/profile"
 @inject NavigationManager navigationManager
-    <div class="row">
-        <div class="col-md-12">
-            <RadzenTabs Style="margin-top:20px;">
-                <Tabs>
-                    <RadzenTabsItem Text="Profile">
-                        <RadzenCard>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <b style="margin-top:20px">Email:</b>
-                                    qwerty123@mail.ru
-                                </div>
+@inject AuthenticationStateProvider authStateProvider
+@inject HttpClient http
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTabs Style="margin-top:20px;">
+            <Tabs>
+                <RadzenTabsItem Text="Profile">
+                    <RadzenCard>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b style="margin-top:20px">Email:</b>
+                                qwerty123@mail.ru
                             </div>
-                        </RadzenCard>
-                    </RadzenTabsItem>
-                    <RadzenTabsItem Text="Tasks">
-                        <RadzenCard>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <EditForm>
-
-                                    </EditForm>
-                                </div>
+                        </div>
+                    </RadzenCard>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Tasks">
+                    <RadzenCard>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <TaskEditorComponent />
                             </div>
-                        </RadzenCard>
-                    </RadzenTabsItem>
-                </Tabs>
-            </RadzenTabs>
-        </div>
-    </div>    
+                        </div>
+                        <div style="margin-top:10px" class="row">
+                            <div class="col-md-12">
+                                <h3>My Tasks</h3>
+                                <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            AllowSorting="true" Data="@Tasks" TItem="DictantSource" ColumnWidth="200px">
+                                    <Columns>
+                                        <RadzenGridColumn TItem="DictantSource" Property="Title" Title="Title" />
+                                    </Columns>
+                                </RadzenGrid>
+                            </div>
+                        </div>
+                        <div style="margin-top:10px" class="row">
+                            <div class="col-md-12">
+                                <h3>Tasks</h3>
+                                <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            AllowSorting="true" Data="@Dictants" TItem="DictantSource" ColumnWidth="200px">
+                                    <Columns>
+                                        <RadzenGridColumn TItem="DictantSource" Property="Title" Title="Title" />
+                                    </Columns>
+                                </RadzenGrid>
+                            </div>
+                        </div>
+                    </RadzenCard>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
 
-@code {
-
-}

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Dictant.Shared.Models.Tasks.JsonModels;
+using Microsoft.AspNetCore.Components;
 
 namespace Dictant.Web.Components.Editor
 {
@@ -62,13 +63,13 @@ namespace Dictant.Web.Components.Editor
         private void UpdateWords(int i, string args)
         {
             var words = Words;
-            words[i] = args.Split("",StringSplitOptions.RemoveEmptyEntries).ToList();
+            words[i] = args.Split(" ",StringSplitOptions.RemoveEmptyEntries).ToList();
             Words = words;
         }
         private void UpdateTimings(int i, bool isStart , string args)
         {
             var timings = Timings;
-            timings[i][isStart ? 0 : 1] = int.Parse(args);
+            timings[i][isStart ? 0 : 1] = double.Parse(args);
             Timings = timings;
         }
 
@@ -88,6 +89,12 @@ namespace Dictant.Web.Components.Editor
             Timings = Timings.Take(Timings.Count-1).ToList();
             Words = Words.Take(Words.Count-1).ToList();;
             LineCount--;
+        }
+
+        private void SaveDictant()
+        {
+            http.PostJsonAsync("https://localhost:5001/api/Dictant/Post", Source);
+            navigationManager.NavigateTo("/profile");
         }
     }
 }

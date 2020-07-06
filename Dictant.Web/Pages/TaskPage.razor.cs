@@ -65,18 +65,17 @@ namespace Dictant.Web.Pages
         
         private void Start()
         {
-            //http.PostJsonAsync("https://localhost:5001/api/Dictant/Post", Source);
             var segments = GetTimings();
             if (!IsStarted)
             {
                 startTime = DateTime.Now;
                 IsStarted = true;
                 interactButtonText = "Repeat";
-                 js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1]+1);
+                 js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1]- segments[LineIndex][0] + 1);
             }
             else
             {
-                 js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1]);
+                 js.AudioPlaySegment("zvuk",segments[LineIndex][0],segments[LineIndex][1] - segments[LineIndex][0]);
                  Repeats++;
             }
         }
@@ -113,7 +112,7 @@ namespace Dictant.Web.Pages
                     }
                     LineIndex++;
                     WordInex = 0;
-                    js.AudioPlaySegment("zvuk",GetTimings()[LineIndex][0],GetTimings()[LineIndex][1]);
+                    js.AudioPlaySegment("zvuk",GetTimings()[LineIndex][0],GetTimings()[LineIndex][1]- GetTimings()[LineIndex][0]);
                 }
                 else
                 {

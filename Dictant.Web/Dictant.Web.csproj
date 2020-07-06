@@ -29,8 +29,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Dictant.Shared\Dictant.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Profile\" />
-  </ItemGroup>
 </Project>

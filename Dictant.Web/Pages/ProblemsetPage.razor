@@ -1,4 +1,5 @@
-﻿@page "/problemset"
+﻿@using Dictant.Web.Components.Problemset
+@page "/problemset"
 @inject HttpClient http
 @inject NavigationManager navigationManager
 
@@ -8,7 +9,7 @@
         { 
         @foreach (var model in Dictants)
         {
-            <Dictant.Web.Components.Problemset.ProblemItemComponent Source="@model"/>
+            <ProblemItemComponent Source="@model"/>
         }
         }
     </div>

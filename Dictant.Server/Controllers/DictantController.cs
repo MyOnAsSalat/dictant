@@ -73,17 +73,14 @@ namespace Dictant.Server.Controllers
                 model.Timings = dto.Timings;
                 model.Description = dto.Description;
                 model.Public = dto.Public;
-                //Временно
                 model.Approved = false;
-                //
                 db.Dictants.Update(model);
                 db.SaveChanges();
             }
             else
             {
                 dto.OwnerId = HttpContext.User.Identity.Name;
-                //Временно
-                dto.Approved = true;
+                dto.Approved = false;
                 db.Dictants.Add(dto);
                 db.SaveChanges();
             }

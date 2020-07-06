@@ -1,3 +1,9 @@
-﻿<Radzen.Blazor.RadzenPanel Style="margin-bottom:5px">
-    <h2><a href="https://localhost:7001/task?id=@Source.Id">@Source.Title</a></h2>
-</Radzen.Blazor.RadzenPanel>
+﻿<a href="https://localhost:7001/task?id=@Source.Id">
+    <Radzen.Blazor.RadzenPanel Style="margin-bottom:5px">
+        <h2>@Source.Title</h2>
+        <br />
+        Description:
+        <br />
+        @Source.Description
+    </Radzen.Blazor.RadzenPanel>
+</a>

@@ -1,12 +1,41 @@
-﻿<audio id="zvuk" preload="none" src="@AudioSource"></audio>
-<RadzenTextBox Placeholder="Title..." Change="@(args => Source.Title = args)" Style="margin-bottom: 20px" />
-<RadzenTextArea Placeholder="Descritpion..." Change="@(args => Source.Description = args)" Style="margin-bottom: 20px" />
-<RadzenTextBox Placeholder="Audio URL..." Change="@(args => AudioSource = args)" Style="margin-bottom: 20px" />
+﻿@inject IJSRuntime js
+@inject HttpClient http
+@inject NavigationManager navigationManager
+@using Dictant.Web.Helpers
+<audio id="zvuk" preload="none" src="@AudioSource"></audio>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTextBox Placeholder="Title..." Change="@(args => Source.Title = args)" Style="margin-bottom: 20px" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTextArea Placeholder="Descritpion..." Change="@(args => Source.Description = args)" Style="margin-bottom: 20px" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTextBox Placeholder="Audio URL..." Change="@(args => AudioSource = args)" Style="margin-bottom: 20px" />
+    </div>
+</div>
 @for (int i = 0; i < LineCount; i++)
 {
-    <RadzenTextBox Placeholder="Words..." Change="@(args => UpdateWords(i, args))" Style="margin-bottom: 20px" />
-    <RadzenTextBox Placeholder="Start..." Change="@(args => UpdateTimings(i,true, args))" Style="margin-bottom: 20px" />
-    <RadzenTextBox Placeholder="End..." Change="@(args => UpdateTimings(i, false, args))" Style="margin-bottom: 20px" />
+    int index = i;
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-md-12">
+            <RadzenTextBox Placeholder="Words..." Change="@(args => UpdateWords(index, args))" />
+            <RadzenTextBox Placeholder="Start..." Change="@(args => UpdateTimings(index,true, args))" Style="margin-left:5px" />
+            <RadzenTextBox Placeholder="End..." Change="@(args => UpdateTimings(index, false, args))" Style="margin-left:5px" />
+            <RadzenButton Click="@(() => { js.AudioPlaySegment("zvuk", Timings[index][0], Timings[index][1]-Timings[index][0]); })" ButtonStyle="ButtonStyle.Success" Style="margin-left:5px" Icon="play_arrow"></RadzenButton>
+            <RadzenButton Click="@(() => { js.AudioPause("zvuk"); })" ButtonStyle="ButtonStyle.Primary" Style="margin-left:5px" Icon="pause"></RadzenButton>
+        </div>
+    </div>
 }
-<Radzen.Blazor.RadzenButton Text="New Line" Click="@NewLine" ButtonStyle="ButtonStyle.Success"/>
-<Radzen.Blazor.RadzenButton Text="Remove Line" Click="@RemoveLine" ButtonStyle="ButtonStyle.Danger" />
+<div class="row" style="margin-top:10px">
+    <div class="col-md-12">
+        <Radzen.Blazor.RadzenButton Text="New Line" Click="@NewLine" ButtonStyle="ButtonStyle.Success" />
+        <Radzen.Blazor.RadzenButton Text="Remove Line" Click="@RemoveLine" ButtonStyle="ButtonStyle.Danger" Style="margin-left:5px" />
+        <Radzen.Blazor.RadzenButton Text="Save Dictant" Click="@SaveDictant" ButtonStyle="ButtonStyle.Primary" Style="margin-left:5px" />
+    </div>
+</div>
+
