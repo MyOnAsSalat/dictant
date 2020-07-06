@@ -14,13 +14,20 @@ namespace Dictant.Web.Components.Editor
         protected override async Task OnInitializedAsync()
         {
             Source = new DictantSource();
+            var audioSource = new AudioSource();
+            audioSource.Type = "audio";
+            Source.AudioSource = JsonConvert.SerializeObject(audioSource);
         }
 
         private string AudioSource
         {
             get => JsonConvert.DeserializeObject<AudioSource>(Source.AudioSource).URL;
-            set => JsonConvert.DeserializeObject<AudioSource>(Source.AudioSource).URL = value;
+            set
+            {
+                var model = JsonConvert.DeserializeObject<AudioSource>(Source.AudioSource);
+                model.URL = value;
+                Source.AudioSource = JsonConvert.SerializeObject(model);
+            }
         }
-
     }
 }
