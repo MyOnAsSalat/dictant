@@ -15,6 +15,7 @@ namespace Dictant.Web.Pages
         {
             var userName = (await authStateProvider.GetAuthenticationStateAsync()).User.Identity.Name;
             Tasks = (await http.GetJsonAsync<IEnumerable<DictantSource>>("https://localhost:5001/api/Dictant/get")).Where(x => x.OwnerId == userName);
+
             Dictants = (await http.GetJsonAsync<IEnumerable<DictantSource>>("https://localhost:5001/api/Dictant/get")).Where(x => x.OwnerId == userName);
         }
     }

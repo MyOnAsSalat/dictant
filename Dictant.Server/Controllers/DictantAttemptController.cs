@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dictant.Server.Data;
+using Dictant.Server.Helpers;
 using Dictant.Shared.Models.Tasks;
+using Dictant.Shared.Models.Tasks.JsonModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,10 @@ namespace Dictant.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DictantSourceController : ControllerBase
+    public class DictantAttemptController : ControllerBase
     {
         private TasksDbContext db;
-        public DictantSourceController(TasksDbContext db)
+        public DictantAttemptController(TasksDbContext db)
         {
             this.db = db;
         }
@@ -28,29 +30,33 @@ namespace Dictant.Server.Controllers
         }
 
         // POST api/<DictantSourceController>
-        [HttpPost][Authorize]
-        public void StartAttempt([FromBody] Attempt dto)
+        [HttpPost("StartAttempt")]
+        public int StartAttempt([FromBody] Attempt dto)
         {
-            dto.User = HttpContext.User.Identity.Name;
+            dto.User = UserHelper.GetName(HttpContext);
             dto.Result = null;
             dto.Start = DateTime.Now;
             dto.Finished = false;
-            db.Attempts.Add(dto);
-            db.SaveChangesAsync();
+            dto.Dictant = db.Dictants.FirstOrDefault(x => x.Id == dto.Dictant.Id);
+            var model = db.Attempts.Add(dto);
+            db.SaveChanges();
+            return model.Entity.Id;
         }
-        [HttpPost][Authorize]
-        public void FinishAttempt([FromBody] AttemptResult dto)
+        [HttpPost("FinishAttempt")]
+        public ElapsedTime FinishAttempt([FromBody] AttemptResult dto)
         {
             var model = db.Attempts.FirstOrDefault(x=>x.Id == dto.Id);
-            if (model == null || model.User != HttpContext.User.Identity.Name || model.Finished) return;
+            if (model == null || model.User != UserHelper.GetName(HttpContext) || model.Finished) return null;
             model.Result = dto.Result;
             model.Finished = true;
             model.End = DateTime.Now;
-            db.Attempts.Add(model);
-            db.SaveChangesAsync();
+            db.Attempts.Update(model);
+            db.SaveChanges();
+            var elapsedTime = model.End - model.Start;
+            return new ElapsedTime() { elapsedTime = string.Format("{0}:{1}", (int)elapsedTime.TotalMinutes, elapsedTime.Seconds) };
         }
 
-        // DELETE api/<DictantSourceController>/5
+        // DELETE api/<DictantSourceController>/
         [HttpDelete("{id}")][Authorize]
         public async void Delete(int id)
         {

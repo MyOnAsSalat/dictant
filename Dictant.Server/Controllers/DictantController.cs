@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using Dictant.Server.Data;
+using Dictant.Server.Helpers;
 using Dictant.Shared.Models.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,9 +22,11 @@ namespace Dictant.Server.Controllers
     [ApiController]
     public class DictantController : ControllerBase
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private TasksDbContext db;
-        public DictantController(TasksDbContext db)
+        public DictantController(TasksDbContext db, UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
             this.db = db;
         }
         
@@ -61,7 +68,7 @@ namespace Dictant.Server.Controllers
 
         
         [HttpPost("Post")]
-        public void Post([FromBody] DictantSource dto)
+        public async Task PostAsync([FromBody] DictantSource dto)
         {
             var model = db.Dictants.FirstOrDefault(x => x.Id == dto.Id);
             if (model != null)
@@ -79,15 +86,15 @@ namespace Dictant.Server.Controllers
             }
             else
             {
-                dto.OwnerId = HttpContext.User.Identity.Name;
+                dto.OwnerId = UserHelper.GetName(HttpContext);
                 dto.Approved = false;
                 db.Dictants.Add(dto);
                 db.SaveChanges();
             }
             
-        }
+        }        
 
-        
+
         [HttpDelete("{id}")][Authorize]
         public async void Delete(int id)
         {

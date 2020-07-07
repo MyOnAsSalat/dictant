@@ -5,7 +5,7 @@
 @inject HttpClient http
 <div class="row">
     <div class="col-md-12">
-        <audio id="zvuk" preload="none" src="https://zaycev.net/musicset/dl/083cbb792c8b9ad91a78e27c3b14601f/3080181.json?spa=false"></audio>
+        <audio id="zvuk" preload="none" src="@Audio"></audio>
         @if (Source != null)
         {
             <div class="row" style="margin-top:20px">
@@ -43,13 +43,13 @@
                 {
                     <div class="row" style="margin-bottom:5px">
                         <div class="col-md-12">
-                            <RadzenTextBox @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDown"></RadzenTextBox>
+                            <RadzenTextBox @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDownAsync"></RadzenTextBox>
                         </div>
                     </div>
                 }
             <div class="row">
                 <div class="col-md-12">
-                    <Radzen.Blazor.RadzenButton Style="margin-bottom:5px" Text="@interactButtonText" Click="@Start" />
+                    <Radzen.Blazor.RadzenButton Style="margin-bottom:5px" Text="@interactButtonText" Click="@StartAsync" />
                 </div>
             </div>
             }
@@ -68,7 +68,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h1 class="text-center">  Time elapsed: <strong>@(string.Format("{0}:{1}", (int)elapsedTime.TotalMinutes, elapsedTime.Seconds))</strong></h1>
+                            <h1 class="text-center">  Time elapsed: <strong>@elapsedTime</strong></h1>
                         </div>                        
                     </div>
                 </RadzenCard>

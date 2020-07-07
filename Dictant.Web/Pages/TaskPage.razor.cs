@@ -20,7 +20,7 @@ namespace Dictant.Web.Pages
         public DictantSource Source;
         private List<string> _uniqueWords;
         private DateTime startTime;
-        private TimeSpan elapsedTime;
+        private string elapsedTime;
         public List<string> GetUniqueWords()
         {
             if(Text == null) return new List<string>(){ "null"};
@@ -43,6 +43,14 @@ namespace Dictant.Web.Pages
             }
         }
 
+        private string Audio
+        {
+            get
+            {
+                if (Source == null) return "";
+                return JsonConvert.DeserializeObject<AudioSource>(Source.AudioSource).URL;
+            }
+        }
         public List<double[]> GetTimings()
         {
             if (Source == null) return new List<double[]>();
@@ -62,12 +70,17 @@ namespace Dictant.Web.Pages
             }
         }
 
-        
-        private void Start()
+        private int id;
+        private async Task StartAsync()
         {
             var segments = GetTimings();
             if (!IsStarted)
             {
+                var attempt = new Attempt();
+                attempt.Type = "basic";
+                attempt.User = "user";
+                attempt.Dictant = Source;
+                id = await http.PostJsonAsync<int>("https://localhost:5001/api/DictantAttempt/StartAttempt", attempt);
                 startTime = DateTime.Now;
                 IsStarted = true;
                 interactButtonText = "Repeat";
@@ -90,7 +103,7 @@ namespace Dictant.Web.Pages
         private int Repeats = 0;
         private int MistakesCount = 0;
         private string interactButtonText = "start";
-        private void InputKeyDown(KeyboardEventArgs e)
+        private async Task InputKeyDownAsync(KeyboardEventArgs e)
         {
             if (e.Code != "Space") return;
             var word = wordbox.Trim().ToLower();
@@ -105,8 +118,11 @@ namespace Dictant.Web.Pages
                 {
                     if (LineIndex == Text.Words.Count - 1)
                     {
-                        elapsedTime = DateTime.Now - startTime;
                         IsFinished = true;
+                        var result = new AttemptResult();
+                        result.Id = id;
+                        result.Result = JsonConvert.SerializeObject(new ResultSource() {MistakesCount=MistakesCount, RepeatsCount=Repeats });
+                        elapsedTime = (await http.PostJsonAsync<ElapsedTime>("https://localhost:5001/api/DictantAttempt/FinishAttempt", result)).elapsedTime;                        
                         //Finish
                         return;
                     }
