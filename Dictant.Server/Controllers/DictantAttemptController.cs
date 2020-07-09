@@ -23,12 +23,17 @@ namespace Dictant.Server.Controllers
             this.db = db;
         }
         // GET api/<DictantSourceController>/5
-        [HttpGet("{id}")]
-        public async Task<DictantSource> Get(int id)
+        [HttpGet("GetUserAttempt/{userId}")]
+        public async Task<IEnumerable<UserAttempt>> GetUserAttempt(string userId)
         {
-            return await db.Dictants.FindAsync(id);
+            return db.Attempts.Where(x => x.User == userId && x.Finished).Select(x => new UserAttempt() { Attempt = x, Title=x.Dictant.Title}) ;
         }
 
+        [HttpGet("Get")]
+        public IEnumerable<Attempt> Get()
+        {
+            return db.Attempts;
+        }
         // POST api/<DictantSourceController>
         [HttpPost("StartAttempt")]
         public int StartAttempt([FromBody] Attempt dto)

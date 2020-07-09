@@ -1,4 +1,5 @@
 ﻿@using Dictant.Shared.Models.Tasks;
+@using Dictant.Shared.Models.Tasks.JsonModels;
 @using Dictant.Web.Components.Editor;  
 @page "/profile"
 @inject NavigationManager navigationManager
@@ -8,16 +9,6 @@
     <div class="col-md-12">
         <RadzenTabs Style="margin-top:20px;">
             <Tabs>
-                <RadzenTabsItem Text="Profile">
-                    <RadzenCard>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <b style="margin-top:20px">Email:</b>
-                                qwerty123@mail.ru
-                            </div>
-                        </div>
-                    </RadzenCard>
-                </RadzenTabsItem>
                 <RadzenTabsItem Text="Tasks">
                     <RadzenCard>
                         <div class="row">
@@ -28,8 +19,7 @@
                         <div style="margin-top:10px" class="row">
                             <div class="col-md-12">
                                 <h3>My Tasks</h3>
-                                <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                            AllowSorting="true" Data="@Tasks" TItem="DictantSource" ColumnWidth="200px">
+                                <RadzenGrid RowSelect="@(args => navigationManager.NavigateTo("/task?id="+args.Id))" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@Tasks" TItem="DictantSource" ColumnWidth="200px">
                                     <Columns>
                                         <RadzenGridColumn TItem="DictantSource" Property="Title" Title="Title" />
                                     </Columns>
@@ -38,12 +28,27 @@
                         </div>
                         <div style="margin-top:10px" class="row">
                             <div class="col-md-12">
-                                <h3>Tasks</h3>
+                                <h3>My Attempts</h3>
                                 <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                            AllowSorting="true" Data="@Dictants" TItem="DictantSource" ColumnWidth="200px">
+                                            AllowSorting="true" Data="@Attempts" TItem="UserAttempt" ColumnWidth="200px">
                                     <Columns>
-                                        <RadzenGridColumn TItem="DictantSource" Property="Title" Title="Title" />
-                                    </Columns>
+                                        <RadzenGridColumn TItem="UserAttempt" Property="Title" Title="Title" />
+                                        <RadzenGridColumn TItem="UserAttempt" Title="Mistakes">
+                                            <Template Context="data">
+                                                @GetMistakes(data.Attempt)
+                                            </Template>
+                                        </RadzenGridColumn>
+                                        <RadzenGridColumn TItem="UserAttempt" Title="Repeats">
+                                            <Template Context="data">
+                                                @GetRepeats(data.Attempt)
+                                            </Template>
+                                        </RadzenGridColumn>
+                                        <RadzenGridColumn TItem="UserAttempt" Title="Elapsed Time">
+                                            <Template Context="data">
+                                                @GetElapsedTime(data.Attempt)
+                                            </Template>
+                                        </RadzenGridColumn>
+</Columns>
                                 </RadzenGrid>
                             </div>
                         </div>

@@ -1,12 +1,12 @@
 ﻿@inject HttpClient http
 <div class="row">
     <div class="col-md-12">
-        <RadzenTextBox @bind-Value="Text" Placeholder="Search..." Change="@ChangeType" Style="margin-bottom: 20px" />
+        <RadzenTextBox @bind-Value="Text" Placeholder="Search..." Change="@ChangeType" Style="margin-bottom: 20px; width:100%" />
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <RadzenRadioButtonList Change="@ChangeType" @bind-Value="property" TValue="int">
+        <RadzenRadioButtonList Style="width:100%" Change="@ChangeType" @bind-Value="property" TValue="int">
             <Items>
                 <RadzenRadioButtonListItem  Text="Title" Value="1" />
                 <RadzenRadioButtonListItem Text="Description" Value="2" />

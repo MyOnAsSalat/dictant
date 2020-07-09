@@ -1,7 +1,24 @@
-﻿@inject HttpClient http
+﻿@using Dictant.Shared.Models.Tasks.JsonModels
+@using Dictant.Shared.Models.Tasks 
+@inject HttpClient http
 @inject NavigationManager navigationManager
-<Radzen.Blazor.RadzenPanel>
-    <h2>@Source.Id  @Source.OwnerId  <a href="https://localhost:7001/task?id=@Source.Id">@Source.Title</a></h2>
-    <Radzen.Blazor.RadzenButton Text="Approve" Click="@(() => { http.GetAsync("https://localhost:5001/api/Dictant/Approve/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Success" />
-    <Radzen.Blazor.RadzenButton Text="Reject" Click="@(() => {http.GetAsync("https://localhost:5001/api/Dictant/Reject/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Danger" />
-</Radzen.Blazor.RadzenPanel>
+    <Radzen.Blazor.RadzenPanel>
+        <a href="https://localhost:7001/task?id=@Source.Id"><h2>@Source.Title</h2></a>
+        <div class="row">
+            <div class="col-md-12">
+                Owner: @Source.OwnerId
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                Description:
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Source.Description
+            </div>
+        </div>
+        <Radzen.Blazor.RadzenButton Text="Approve" Click="@(() => { http.GetAsync("https://localhost:5001/api/Dictant/Approve/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Success" />
+        <Radzen.Blazor.RadzenButton Text="Reject" Click="@(() => {http.GetAsync("https://localhost:5001/api/Dictant/Reject/" + Source.Id); navigationManager.NavigateTo("/moderation");})" ButtonStyle="ButtonStyle.Danger" />
+    </Radzen.Blazor.RadzenPanel>

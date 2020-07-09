@@ -43,7 +43,7 @@
                 {
                     <div class="row" style="margin-bottom:5px">
                         <div class="col-md-12">
-                            <RadzenTextBox @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDownAsync"></RadzenTextBox>
+                            <RadzenTextBox Style="width:50%" @oninput="@(args => wordbox = args.Value.ToString())" @bind-Value="@wordbox" @onkeypress="InputKeyDownAsync"></RadzenTextBox>
                         </div>
                     </div>
                 }

@@ -5,17 +5,22 @@
 <audio id="zvuk" preload="none" src="@AudioSource"></audio>
 <div class="row">
     <div class="col-md-12">
-        <RadzenTextBox Placeholder="Title..." Change="@(args => Source.Title = args)" Style="margin-bottom: 20px" />
+        <h3>Task Editor</h3>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <RadzenTextArea Placeholder="Descritpion..." Change="@(args => Source.Description = args)" Style="margin-bottom: 20px" />
+        <RadzenTextBox  Placeholder="Title..." Change="@(args => Source.Title = args)" Style="margin-bottom: 20px; width:50%" />
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <RadzenTextBox Placeholder="Audio URL..." Change="@(args => AudioSource = args)" Style="margin-bottom: 20px" />
+        <RadzenTextArea Rows="5" Placeholder="Descritpion..." Change="@(args => Source.Description = args)" Style="margin-bottom: 20px;width: 50%" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenTextBox Placeholder="Audio URL..." Change="@(args => AudioSource = args)" Style="margin-bottom: 20px;width: 50%" />
     </div>
 </div>
 @for (int i = 0; i < LineCount; i++)
@@ -23,10 +28,10 @@
     int index = i;
     <div class="row" style="margin-bottom:10px">
         <div class="col-md-12">
-            <RadzenTextBox Placeholder="Words..." Change="@(args => UpdateWords(index, args))" />
-            <RadzenTextBox Placeholder="Start..." Change="@(args => UpdateTimings(index,true, args))" Style="margin-left:5px" />
-            <RadzenTextBox Placeholder="End..." Change="@(args => UpdateTimings(index, false, args))" Style="margin-left:5px" />
-            <RadzenButton Click="@(() => { js.AudioPlaySegment("zvuk", Timings[index][0], Timings[index][1]-Timings[index][0]); })" ButtonStyle="ButtonStyle.Success" Style="margin-left:5px" Icon="play_arrow"></RadzenButton>
+            <RadzenTextBox Style="width:50%" Placeholder="Words..." Change="@(args => UpdateWords(index, args))" />
+            <RadzenTextBox Placeholder="Start..." Change="@(args => UpdateTimings(index,true, args))" Style="margin-left: 5px;width: 10%" />
+            <RadzenTextBox Placeholder="End..." Change="@(args => UpdateTimings(index, false, args))" Style="margin-left: 5px;width: 10%" />
+            <RadzenButton Click="@(() => { js.AudioPlaySegment("zvuk", Timings[index][0], Timings[index][1]-Timings[index][0]); })" ButtonStyle="ButtonStyle.Success" Style="margin-left:5px;" Icon="play_arrow"></RadzenButton>
             <RadzenButton Click="@(() => { js.AudioPause("zvuk"); })" ButtonStyle="ButtonStyle.Primary" Style="margin-left:5px" Icon="pause"></RadzenButton>
         </div>
     </div>
