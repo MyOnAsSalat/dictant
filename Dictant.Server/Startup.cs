@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -16,6 +15,7 @@ using System.Text;
 using Dictant.Server.Data;
 using Dictant.Server.Services;
 using Microsoft.AspNetCore.Http;
+using Dictant.Server.Data.Repositories;
 
 namespace Dictant.Server
 {
@@ -31,9 +31,17 @@ namespace Dictant.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            #region Data
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<TasksDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<BlogDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<IBlogRepository,BlogRepository>();
+            services.AddTransient<IDictantRepository,DictantRepository>();
+            services.AddTransient<IDictantAttemptRepository,DictantAttemptRepository>();
+            services.AddTransient<IExamRepository,ExamRepository>();
+
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
@@ -42,6 +50,8 @@ namespace Dictant.Server
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            #endregion
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -58,7 +68,7 @@ namespace Dictant.Server
             services.AddHttpClient();
 
             services.AddSingleton<ICaptchaValidator>(s => new GoogleCaptchaValidator(
-                "6Lfk9ucUAAAAAEaOMynhbw8Ydw1qzAohgLEEGCQg",                    
+                Configuration["GoogleCaptha:key"],                    
                 s.GetRequiredService<IHttpClientFactory>(),
                 s.GetRequiredService<IHttpContextAccessor>()));
             services.AddMvc().AddNewtonsoftJson();
@@ -67,6 +77,7 @@ namespace Dictant.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+            services.AddSingleton<JwtSecretKeyService>(jsrv => new JwtSecretKeyService(Configuration["jwt:key"]));
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowedSpecificOrigins,

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dictant.Server.Data;
+using Dictant.Server.Data.Repositories;
 using Dictant.Shared.Models.Blog;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,37 +11,33 @@ namespace Dictant.Server.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        private BlogDbContext db;
-        public BlogController(BlogDbContext db)
+        private IBlogRepository repository;
+        public BlogController(IBlogRepository repository)
         {
-            this.db = db;
+            this.repository = repository;
         }
         [HttpGet("Get")][HttpGet]
         public IEnumerable<BlogPost> Get()
         {
-            return db.BlogPosts;
+            return repository.Get();
         }
 
         [HttpGet("{id}")]
-        public BlogPost Get(int id)
+        public async Task<BlogPost> Get(int id)
         {
-            return db.BlogPosts.FirstOrDefault(x=>x.Id == id);
+            return await repository.Get(id);
         }
 
         [HttpPost("Post")]
         public void Post([FromBody] BlogPost value)
         {
-            db.BlogPosts.Add(value); 
-            db.SaveChanges();
+            repository.Create(value);
         }
 
         [HttpDelete("{id}")]
         public async void Delete(int id)
         {
-            var model = db.BlogPosts.FirstOrDefault(x => x.Id == id);
-            if (model == null) return;
-            db.BlogPosts.Remove(model);
-            await db.SaveChangesAsync();
+            repository.Delete(id);
         }
     }
 }

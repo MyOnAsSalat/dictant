@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dictant.Server.Services;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dictant.Server.Helpers
 {
@@ -14,8 +13,7 @@ namespace Dictant.Server.Helpers
         public static string GetName(HttpContext context)
         {
             var token = ((string)context.Request.Headers.Values.Skip(4).First()).Replace("bearer ", "");
-            string secret = "LKM3LKM344NKSJDFN4KJ345N43KJN4KJFNKDJFSNDKFJN4KJKJN4";
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Encoding.ASCII.GetBytes(((JwtSecretKeyService)context.RequestServices.GetService(typeof(JwtSecretKeyService))).SecretKey);
             var handler = new JwtSecurityTokenHandler();
             var validations = new TokenValidationParameters
             {

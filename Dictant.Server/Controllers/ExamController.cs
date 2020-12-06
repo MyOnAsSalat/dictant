@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dictant.Server.Data;
+using Dictant.Server.Data.Repositories;
+using Dictant.Server.Helpers;
 using Dictant.Shared.Models.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Dictant.Server.Controllers
 {
@@ -14,28 +17,26 @@ namespace Dictant.Server.Controllers
     [ApiController]
     public class ExamController : ControllerBase
     {
-        // GET: api/<ExamController>
-        private TasksDbContext db;
-        public ExamController(TasksDbContext db)
+        private IExamRepository repository;
+        public ExamController(IExamRepository repository)
         {
-            this.db = db;
+            this.repository = repository;
         }
 
-        // GET api/<ExamController>/5
         [HttpGet("{id}")]
-        public Exam Get(int id)
+        public async Task<Exam> Get(int id)
         {
-            return db.Exams.FirstOrDefault(x=>x.Id==id);
+            return await repository.Get(id);
         }
 
-        // POST api/<ExamController>
-        [HttpPost]
-        public void Post()
+
+        [HttpPost][Authorize]
+        public void Post([FromBody] Exam dto)
         {
+            repository.Create(dto,UserHelper.GetName(HttpContext));
         }
 
-        // DELETE api/<ExamController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")][Authorize]
         public void Delete(int id)
         {
         }

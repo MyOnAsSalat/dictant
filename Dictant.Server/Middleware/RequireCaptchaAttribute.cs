@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 using Microsoft.AspNetCore.Mvc;
 using Dictant.Server.Services;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 namespace Dictant.Server.Middleware
 {

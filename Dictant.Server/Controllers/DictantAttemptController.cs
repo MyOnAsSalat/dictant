@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dictant.Server.Data;
+using Dictant.Server.Data.Repositories;
 using Dictant.Server.Helpers;
 using Dictant.Shared.Models.Tasks;
 using Dictant.Shared.Models.Tasks.JsonModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 
 namespace Dictant.Server.Controllers
 {
@@ -17,56 +15,39 @@ namespace Dictant.Server.Controllers
     [ApiController]
     public class DictantAttemptController : ControllerBase
     {
-        private TasksDbContext db;
-        public DictantAttemptController(TasksDbContext db)
+        private IDictantAttemptRepository repository;
+        public DictantAttemptController(IDictantAttemptRepository repository)
         {
-            this.db = db;
+            this.repository = repository;
         }
-        // GET api/<DictantSourceController>/5
+
         [HttpGet("GetUserAttempt/{userId}")]
-        public async Task<IEnumerable<UserAttempt>> GetUserAttempt(string userId)
+        public IEnumerable<UserAttempt> GetUserAttempt(string userId)
         {
-            return db.Attempts.Where(x => x.User == userId && x.Finished).Select(x => new UserAttempt() { Attempt = x, Title=x.Dictant.Title}) ;
+            return repository.GetUserAttempt(userId);
         }
 
         [HttpGet("Get")]
         public IEnumerable<Attempt> Get()
         {
-            return db.Attempts;
-        }
-        // POST api/<DictantSourceController>
-        [HttpPost("StartAttempt")]
-        public int StartAttempt([FromBody] Attempt dto)
-        {
-            dto.User = UserHelper.GetName(HttpContext);
-            dto.Result = null;
-            dto.Start = DateTime.Now;
-            dto.Finished = false;
-            dto.Dictant = db.Dictants.FirstOrDefault(x => x.Id == dto.Dictant.Id);
-            var model = db.Attempts.Add(dto);
-            db.SaveChanges();
-            return model.Entity.Id;
-        }
-        [HttpPost("FinishAttempt")]
-        public ElapsedTime FinishAttempt([FromBody] AttemptResult dto)
-        {
-            var model = db.Attempts.FirstOrDefault(x=>x.Id == dto.Id);
-            if (model == null || model.User != UserHelper.GetName(HttpContext) || model.Finished) return null;
-            model.Result = dto.Result;
-            model.Finished = true;
-            model.End = DateTime.Now;
-            db.Attempts.Update(model);
-            db.SaveChanges();
-            var elapsedTime = model.End - model.Start;
-            return new ElapsedTime() { elapsedTime = string.Format("{0}:{1}", (int)elapsedTime.TotalMinutes, elapsedTime.Seconds) };
+            return repository.Get();
         }
 
-        // DELETE api/<DictantSourceController>/
-        [HttpDelete("{id}")][Authorize]
-        public async void Delete(int id)
+        [HttpPost("StartAttempt")]
+        public async Task<int> StartAttempt([FromBody] Attempt dto)
         {
-            db.Dictants.Remove(db.Dictants.FirstOrDefault(x=>x.Id == id));
-            await db.SaveChangesAsync();
+           return await repository.StartAttempt(dto, UserHelper.GetName(HttpContext));
+        }
+        [HttpPost("FinishAttempt")]
+        public async Task<ElapsedTime> FinishAttempt([FromBody] AttemptResult dto)
+        {
+           return await repository.FinishAttempt(dto,UserHelper.GetName(HttpContext));
+        }
+
+        [HttpDelete("{id}")][Authorize]
+        public void Delete(int id)
+        {
+            repository.Delete(id);
         }
     }
 }
